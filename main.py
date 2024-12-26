@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 import threading
 import requests
 import datetime
+import time
 
 app = Flask(__name__)
 
@@ -12,7 +13,8 @@ lista_requisicoes = []
 def fazer_requisicao():
     while True:
         try:
-            response = requests.get("https://plantoesuau.onrender.com/")
+            # Envia requisição para o Flet
+            response = requests.get("http://127.0.0.1:5000/")
             status_code = response.status_code
         except Exception as e:
             status_code = f"Erro: {str(e)}"
@@ -23,8 +25,8 @@ def fazer_requisicao():
             "status": status_code
         })
 
-        # Dormir por 5 segundos antes da próxima requisição
-        threading.Event().wait(5)
+        # Dormir por 30 segundos antes da próxima requisição
+        time.sleep(30)
 
 # Rota para exibir a última requisição
 @app.route("/", methods=["GET"])
